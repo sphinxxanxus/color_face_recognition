@@ -8,6 +8,7 @@ from os import path, access, R_OK, remove
 
 from recognition_api import color_histogram_extraction as color_extraction
 from recognition_api import knn_classifier as knn
+from recognition_api import knn_face_recognition as knn_face
 
 
 def cmd_parse_line():
@@ -26,6 +27,8 @@ def cmd_parse_line():
     parser.add_argument('-c', '--camera', help='Le numéro de caméra.'
                                                ' 0 pour la  webcam du PC',
                         default=0, type=int)
+    parser.add_argument('-f', '--face', help='face recognition image',
+                        action='store_true')
     return parser.parse_args()
 
 
@@ -91,9 +94,12 @@ if __name__ == '__main__':
         try:
             remove('test.data')
             remove('training.data')
+            remove('training_face.clf')
         except FileNotFoundError:
             pass
         except FileExistsError:
             pass
         color_extraction.training()  # Entraînement
-        print("\033[1;32m Done !!!\033[1;m")
+        knn_face.training('training_face_dataset', 'training_face.clf', args.k)
+    elif args.face:
+        knn_face.main(args.path)

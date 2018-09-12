@@ -1,6 +1,7 @@
 from cv2 import split, calcHist, imread
 from numpy import argmax as argmax
 from os import listdir
+from time import sleep
 
 
 def maxs_pixel_rgb(image_read: str)->str:
@@ -48,3 +49,7 @@ def training() -> None:
             color_histogram_training_image('./training_dataset/'
                                            + folder_name + '/'
                                            + file_name)
+        print("\033[1;34m Entraînement à la "
+              "couleur " + folder_name + "...\033[1;m"
+              + "\033[1;32m done!!!\033[1;m", flush=True)
+        sleep(2)
